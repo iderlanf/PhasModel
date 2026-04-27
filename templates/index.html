@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Modelos</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        form { margin-bottom: 30px; display: grid; gap: 10px; max-width: 400px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Phas Models</h1>
+    
+    <h2>Cadastrar Nova Modelo</h2>
+    <form action="/adicionar" method="POST" enctype="multipart/form-data">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="number" name="idade" placeholder="Idade" required>
+        <input type="number" name="peso" placeholder="Peso (kg)" required>
+        <input type="number" step="0.01" name="altura" placeholder="Altura (Ex: 1.75)" required>
+        <input type="text" name="cor" placeholder="Cor/Etnia" required>
+        <input type="number" step="0.1" name="busto" placeholder="Busto" required>
+        <input type="number" step="0.1" name="cintura" placeholder="Cintura" required>
+        <input type="number" step="0.1" name="quadril" placeholder="Quadril" required>
+        <label>Foto da Modelo:</label>
+        <input type="file" name="foto_arquivo" accept="image/*" required>
+        <textarea name="evento_participado" placeholder="Eventos que já participou"></textarea>
+        <button type="submit">Adicionar Modelo</button>
+    </form>
+
+    <h2>Modelos Cadastradas</h2>
+    <table>
+        <tr>
+            <th>Nome</th><th>Idade</th><th>Altura</th><th>Medidas (B/C/Q)</th><th>Eventos</th><th>Ações</th>
+        </tr>
+        {% for m in modelos %}
+<tr>
+    <td><a href="{{ url_for('detalhes', id=m.id) }}">{{ m.nome }}</a></td>
+    <td>{{ m.nome }}</td>
+    <td>{{ m.idade }}</td>
+    <td>{{ m.altura }}m</td>
+    <td>{{ m.busto }}/{{ m.cintura }}/{{ m.quadril }}</td>
+    <td>{{ m.evento_participado }}</td>
+    <td>
+        <!-- Botão Excluir com confirmação -->
+        <a href="{{ url_for('excluir', id=m.id) }}" 
+           onclick="return confirm('Tem certeza que deseja excluir esta modelo?')"
+           style="color: white; background-color: #f44336; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 12px;">
+            Excluir
+        </a>
+    </td>
+</tr>
+{% endfor %}
+    </table>
+</body>
+</html>

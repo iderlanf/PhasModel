@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil: {{ modelo.nome }}</title>
+    <style>
+        .perfil { text-align: center; margin-top: 50px; font-family: Arial; }
+        img { border-radius: 15px; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+    <div class="perfil">
+    <h1>{{ modelo.nome }}</h1>
+    
+    <!-- O Flask busca na pasta static automaticamente -->
+    <img src="{{ url_for('static', filename='uploads/' + modelo.foto_url) }}" 
+         alt="Foto de {{ modelo.nome }}" style="max-width: 400px;">
+    
+    <p><strong>Idade:</strong> {{ modelo.idade }} anos</p>
+    <br>
+    <a href="/">← Voltar para a lista</a>
+</div>
+</body>
+</html>
