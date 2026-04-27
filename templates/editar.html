@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Modelo: {{ modelo.nome }}</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        form { margin-bottom: 30px; display: grid; gap: 10px; max-width: 400px; }
+        .voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #666; }
+        label { font-weight: bold; margin-top: 5px; }
+        button { background-color: #2196F3; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 4px; }
+        button:hover { background-color: #0b7dda; }
+    </style>
+</head>
+<body>
+    <a href="/" class="voltar">← Cancelar e Voltar</a>
+    
+    <h1>Editar Perfil</h1>
+    <h2>Modelo: {{ modelo.nome }}</h2>
+
+    <form action="/editar/{{ modelo.id }}" method="POST">
+        <label>Nome:</label>
+        <input type="text" name="nome" value="{{ modelo.nome }}" required>
+        
+        <label>Idade:</label>
+        <input type="number" name="idade" value="{{ modelo.idade }}" required>
+        
+        <label>Peso (kg):</label>
+        <input type="number" name="peso" value="{{ modelo.peso }}" required>
+        
+        <label>Altura (m):</label>
+        <input type="number" step="0.01" name="altura" value="{{ modelo.altura }}" required>
+        
+        <label>Cor/Etnia:</label>
+        <input type="text" name="cor" value="{{ modelo.cor }}" required>
+        
+        <label>Busto (cm):</label>
+        <input type="number" step="0.1" name="busto" value="{{ modelo.busto }}" required>
+        
+        <label>Cintura (cm):</label>
+        <input type="number" step="0.1" name="cintura" value="{{ modelo.cintura }}" required>
+        
+        <label>Quadril (cm):</label>
+        <input type="number" step="0.1" name="quadril" value="{{ modelo.quadril }}" required>
+
+        <label>Eventos que já participou:</label>
+        <textarea name="evento_participado" rows="4">{{ modelo.evento_participado }}</textarea>
+
+        <!-- Campo oculto para manter a URL da foto atual sem precisar fazer upload novamente -->
+        <input type="hidden" name="foto_url" value="{{ modelo.foto_url }}">
+
+        <button type="submit">Salvar Alterações</button>
+    </form>
+</body>
+</html>

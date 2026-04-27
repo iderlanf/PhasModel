@@ -30,28 +30,42 @@
     </form>
 
     <h2>Modelos Cadastradas</h2>
-    <table>
-        <tr>
-            <th>Nome</th><th>Idade</th><th>Altura</th><th>Medidas (B/C/Q)</th><th>Eventos</th><th>Ações</th>
-        </tr>
-        {% for m in modelos %}
-<tr>
-    <td><a href="{{ url_for('detalhes', id=m.id) }}">{{ m.nome }}</a></td>
-    <td>{{ m.nome }}</td>
-    <td>{{ m.idade }}</td>
-    <td>{{ m.altura }}m</td>
-    <td>{{ m.busto }}/{{ m.cintura }}/{{ m.quadril }}</td>
-    <td>{{ m.evento_participado }}</td>
-    <td>
-        <!-- Botão Excluir com confirmação -->
-        <a href="{{ url_for('excluir', id=m.id) }}" 
-           onclick="return confirm('Tem certeza que deseja excluir esta modelo?')"
-           style="color: white; background-color: #f44336; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 12px;">
-            Excluir
-        </a>
-    </td>
-</tr>
-{% endfor %}
-    </table>
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Idade</th>
+        <th>Peso</th>
+        <th>Altura</th>
+        <th>Medidas (B/C/Q)</th>
+        <th>Eventos</th>
+        <th>Ações</th>
+    </tr>
+    {% for m in modelos %}
+    <tr>
+        <td><a href="{{ url_for('detalhes', id=m.id) }}">{{ m.nome }}</a></td>
+        <td>{{ m.idade }}</td>
+        <td>{{ m.peso }}kg</td>
+        <td>{{ m.altura }}m</td>
+        <td>{{ m.busto }}cm / {{ m.cintura }}cm / {{ m.quadril }}cm</td>
+        <td>{{ m.evento_participado }}</td>
+        <td>
+    
+    <a href="{{ url_for('editar', id=m.id) }}" 
+       style="color: white; background-color: #2196F3; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 12px; margin-right: 5px;">
+        Editar
+    </a>
+
+    <a href="{{ url_for('excluir', id=m.id) }}" 
+       onclick="return confirm('Tem certeza que deseja excluir esta modelo?')" 
+       style="color: white; background-color: #f44336; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 12px;">
+        Excluir
+    </a>
+</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+
 </body>
 </html>

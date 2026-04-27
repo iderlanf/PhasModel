@@ -12,4 +12,5 @@ CREATE TABLE IF NOT EXISTS modelos (
     cintura DECIMAL(5,2),
     quadril DECIMAL(5,2),
     evento_participado TEXT
+    foto_url VARCHAR(255) DEFAULT 'default.png'
 );
