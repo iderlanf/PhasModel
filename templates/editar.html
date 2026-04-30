@@ -4,52 +4,76 @@
     <meta charset="UTF-8">
     <title>Editar Modelo: {{ modelo.nome }}</title>
     <style>
-        body { font-family: Arial; margin: 20px; }
-        form { margin-bottom: 30px; display: grid; gap: 10px; max-width: 400px; }
-        .voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #666; }
-        label { font-weight: bold; margin-top: 5px; }
-        button { background-color: #2196F3; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 4px; }
+        body { font-family: Arial; margin: 20px; background-color: #f9f9f9; }
+        .container { max-width: 450px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        form { display: grid; gap: 8px; }
+        .voltar { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #2196F3; font-weight: bold; }
+        label { font-weight: bold; margin-top: 10px; font-size: 14px; }
+        input, textarea { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%; box-sizing: border-box; }
+        button { background-color: #2196F3; color: white; border: none; padding: 12px; cursor: pointer; border-radius: 4px; font-weight: bold; margin-top: 20px; }
         button:hover { background-color: #0b7dda; }
     </style>
 </head>
 <body>
+
+<div class="container">
     <a href="/" class="voltar">← Cancelar e Voltar</a>
-    
     <h1>Editar Perfil</h1>
-    <h2>Modelo: {{ modelo.nome }}</h2>
+    <p>Editando dados de: <strong>{{ modelo.nome }}</strong> (ID #{{ modelo.id }})</p>
 
     <form action="/editar/{{ modelo.id }}" method="POST">
         <label>Nome:</label>
         <input type="text" name="nome" value="{{ modelo.nome }}" required>
-        
-        <label>Idade:</label>
-        <input type="number" name="idade" value="{{ modelo.idade }}" required>
-        
-        <label>Peso (kg):</label>
-        <input type="number" name="peso" value="{{ modelo.peso }}" required>
-        
-        <label>Altura (m):</label>
-        <input type="number" step="0.01" name="altura" value="{{ modelo.altura }}" required>
-        
-        <label>Cor/Etnia:</label>
-        <input type="text" name="cor" value="{{ modelo.cor }}" required>
-        
-        <label>Busto (cm):</label>
-        <input type="number" step="0.1" name="busto" value="{{ modelo.busto }}" required>
-        
-        <label>Cintura (cm):</label>
-        <input type="number" step="0.1" name="cintura" value="{{ modelo.cintura }}" required>
-        
-        <label>Quadril (cm):</label>
-        <input type="number" step="0.1" name="quadril" value="{{ modelo.quadril }}" required>
+
+        <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+                <label>Idade:</label>
+                <input type="number" name="idade" value="{{ modelo.idade }}" required>
+            </div>
+            <div style="flex: 1;">
+                <label>Peso (kg):</label>
+                <input type="number" name="peso" value="{{ modelo.peso }}" required>
+            </div>
+            <div style="flex: 1;">
+                <label>Altura (m):</label>
+                <input type="number" step="0.01" name="altura" value="{{ modelo.altura }}" required>
+            </div>
+        </div>
+
+        <!-- Novos campos de Características Físicas -->
+        <label>Cor do Cabelo:</label>
+        <input type="text" name="cabelo" value="{{ modelo.cabelo }}" required>
+
+        <label>Tom de Pele / Etnia:</label>
+        <input type="text" name="pele" value="{{ modelo.pele }}" required>
+
+        <label>Cor dos Olhos:</label>
+        <input type="text" name="olhos" value="{{ modelo.olhos }}" required>
+
+        <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+                <label>Busto:</label>
+                <input type="number" step="0.1" name="busto" value="{{ modelo.busto }}" required>
+            </div>
+            <div style="flex: 1;">
+                <label>Cintura:</label>
+                <input type="number" step="0.1" name="cintura" value="{{ modelo.cintura }}" required>
+            </div>
+            <div style="flex: 1;">
+                <label>Quadril:</label>
+                <input type="number" step="0.1" name="quadril" value="{{ modelo.quadril }}" required>
+            </div>
+        </div>
 
         <label>Eventos que já participou:</label>
         <textarea name="evento_participado" rows="4">{{ modelo.evento_participado }}</textarea>
 
-        <!-- Campo oculto para manter a URL da foto atual sem precisar fazer upload novamente -->
+        <!-- Mantém a foto atual -->
         <input type="hidden" name="foto_url" value="{{ modelo.foto_url }}">
 
         <button type="submit">Salvar Alterações</button>
     </form>
+</div>
+
 </body>
 </html>

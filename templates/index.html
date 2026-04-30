@@ -2,70 +2,139 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Modelos</title>
+    <title>Phas Models - Busca e Gestão</title>
     <style>
-        body { font-family: Arial; margin: 20px; }
-        form { margin-bottom: 30px; display: grid; gap: 10px; max-width: 400px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 1400px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2, h3 { text-align: center; color: #2c3e50; }
+        .form-section { background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 25px; }
+        
+        /* Barra de Busca */
+        .search-container { display: flex; justify-content: center; gap: 10px; max-width: 700px; margin: 0 auto; }
+        .search-container select, .search-container input { padding: 12px; border: 1px solid #ccc; border-radius: 6px; }
+        .search-container input { flex-grow: 1; }
+
+        /* Tabela */
+        table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; }
+        th, td { border: 1px solid #eee; padding: 12px; text-align: center; }
+        th { background-color: #34495e; color: white; text-transform: uppercase; font-size: 11px; }
+        tr:nth-child(even) { background-color: #fafafa; }
+        
+        /* Mensagem de Vazio */
+        .no-results { padding: 50px !important; color: #c0392b; font-weight: bold; font-size: 16px; background-color: #fff5f5; }
+
+        .btn-search { background-color: #2980b9; color: white; border: none; cursor: pointer; padding: 10px 20px; border-radius: 6px; font-weight: bold; }
+        .btn-clear { background-color: #95a5a6; color: white; text-decoration: none; padding: 10px 15px; border-radius: 6px; }
+        .btn-submit { background-color: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; padding: 12px; width: 100%; margin-top: 10px; border-radius: 6px;}
+        .id-badge { background: #7f8c8d; color: white; padding: 2px 6px; border-radius: 3px; }
+        .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+        .full-width { grid-column: span 2; }
     </style>
 </head>
 <body>
+
+<div class="container">
     <h1>Phas Models</h1>
-    
-    <h2>Cadastrar Nova Modelo</h2>
-    <form action="/adicionar" method="POST" enctype="multipart/form-data">
-        <input type="text" name="nome" placeholder="Nome" required>
-        <input type="number" name="idade" placeholder="Idade" required>
-        <input type="number" name="peso" placeholder="Peso (kg)" required>
-        <input type="number" step="0.01" name="altura" placeholder="Altura (Ex: 1.75)" required>
-        <input type="text" name="cor" placeholder="Cor/Etnia" required>
-        <input type="number" step="0.1" name="busto" placeholder="Busto" required>
-        <input type="number" step="0.1" name="cintura" placeholder="Cintura" required>
-        <input type="number" step="0.1" name="quadril" placeholder="Quadril" required>
-        <label>Foto da Modelo:</label>
-        <input type="file" name="foto_arquivo" accept="image/*" required>
-        <textarea name="evento_participado" placeholder="Eventos que já participou"></textarea>
-        <button type="submit">Adicionar Modelo</button>
-    </form>
 
-    <h2>Modelos Cadastradas</h2>
-<table>
-    <tr>
-        <th>Nome</th>
-        <th>Idade</th>
-        <th>Peso</th>
-        <th>Altura</th>
-        <th>Medidas (B/C/Q)</th>
-        <th>Eventos</th>
-        <th>Ações</th>
+    <!-- BUSCA -->
+    <div class="form-section">
+        <h3>🔍 O que você deseja buscar?</h3>
+        <form action="/" method="GET" class="search-container">
+            <select name="filtro_tipo">
+                <option value="idade">Idade</option>
+                <option value="peso">Peso</option>
+                <option value="altura">Altura</option>
+                <option value="cabelo">Cor de Cabelo</option>
+                <option value="pele">Tom de Pele</option>
+                <option value="olhos">Cor dos Olhos</option>
+                <option value="busto">Busto</option>
+                <option value="cintura">Cintura</option>
+                <option value="quadril">Quadril</option>
+            </select>
+            <input type="text" name="filtro_valor" placeholder="Digite o valor aqui..." required>
+            <button type="submit" class="btn-search">Buscar</button>
+            <a href="/" class="btn-clear">Ver Todas</a>
+        </form>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div class="table-section">
+        <h2>Resultados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Peso</th>
+                    <th>Altura</th>
+                    <th>Cabelo</th>
+                    <th>Pele</th>
+                    <th>Olhos</th>
+                    <th>Busto</th>
+                    <th>Cintura</th>
+                    <th>Quadril</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in modelos %}
+                <tr>
+                    <td><span class="id-badge">#{{ m.id }}</span></td>
+                    <td style="text-align: left;"><strong><a href="{{ url_for('detalhes', id=m.id) }}">{{ m.nome }}</a></strong></td>
+                    <td>{{ m.idade }}</td>
+                    <td>{{ m.peso }}kg</td>
+                    <td>{{ "%.2f"|format(m.altura) }}m</td>
+                    <td>{{ m.cabelo }}</td>
+                    <td>{{ m.pele }}</td>
+                    <td>{{ m.olhos }}</td>
+                    <td>{{ m.busto|int }}cm</td>
+                    <td>{{ m.cintura|int }}cm</td>
+                    <td>{{ m.quadril|int }}cm</td>
+                    <td>
+                        <a href="{{ url_for('editar', id=m.id) }}" style="color: #007bff; text-decoration: none; font-weight: bold;">Editar</a> | 
+                        <a href="{{ url_for('excluir', id=m.id) }}" onclick="return confirm('Excluir?')" style="color: #dc3545; text-decoration: none; font-weight: bold;">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <!-- MENSAGEM CASO NÃO HAJA RESULTADOS -->
+                {% if not modelos %}
+                <tr>
+        <td colspan="12" style="padding: 50px; color: #c0392b; font-weight: bold; font-size: 16px; background-color: #fff5f5; text-align: center;">
+            ⚠️ Não há modelos na lista com os critérios informados.
+        </td>
     </tr>
-    {% for m in modelos %}
-    <tr>
-        <td><a href="{{ url_for('detalhes', id=m.id) }}">{{ m.nome }}</a></td>
-        <td>{{ m.idade }}</td>
-        <td>{{ m.peso }}kg</td>
-        <td>{{ m.altura }}m</td>
-        <td>{{ m.busto }}cm / {{ m.cintura }}cm / {{ m.quadril }}cm</td>
-        <td>{{ m.evento_participado }}</td>
-        <td>
-    
-    <a href="{{ url_for('editar', id=m.id) }}" 
-       style="color: white; background-color: #2196F3; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 12px; margin-right: 5px;">
-        Editar
-    </a>
+    {% endif %}
+</tbody>
+        </table>
+    </div>
 
-    <a href="{{ url_for('excluir', id=m.id) }}" 
-       onclick="return confirm('Tem certeza que deseja excluir esta modelo?')" 
-       style="color: white; background-color: #f44336; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 12px;">
-        Excluir
-    </a>
-</td>
+    <hr style="margin: 40px 0; border: 0; border-top: 1px dashed #ccc;">
 
-    </tr>
-    {% endfor %}
-</table>
-
+    <!-- CADASTRO -->
+    <div class="form-section">
+        <h3>➕ Cadastrar Nova Modelo</h3>
+        <form action="/adicionar" method="POST" enctype="multipart/form-data" class="grid-form">
+            <input type="text" name="nome" placeholder="Nome Completo" required>
+            <input type="number" name="idade" placeholder="Idade" required>
+            <input type="number" name="peso" placeholder="Peso (kg)" required>
+            <input type="number" step="0.01" name="altura" placeholder="Altura (ex: 1.75)" required>
+            <input type="text" name="cabelo" placeholder="Cabelo" required>
+            <input type="text" name="pele" placeholder="Pele" required>
+            <input type="text" name="olhos" placeholder="Olhos" required>
+            <input type="number" step="0.1" name="busto" placeholder="Busto" required>
+            <input type="number" step="0.1" name="cintura" placeholder="Cintura" required>
+            <input type="number" step="0.1" name="quadril" placeholder="Quadril" required>
+            <div class="full-width">
+                <label><strong>Foto da Modelo:</strong></label><br>
+                <input type="file" name="foto_arquivo" accept="image/*" required>
+            </div>
+            <textarea name="evento_participado" class="full-width" placeholder="Eventos realizados..."></textarea>
+            <button type="submit" class="btn-submit">Finalizar Cadastro</button>
+        </form>
+    </div>
+</div>
 
 </body>
 </html>

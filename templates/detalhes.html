@@ -4,21 +4,77 @@
     <meta charset="UTF-8">
     <title>Perfil: {{ modelo.nome }}</title>
     <style>
-        .perfil { text-align: center; margin-top: 50px; font-family: Arial; }
-        img { border-radius: 15px; max-width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; }
+        .perfil { 
+            max-width: 600px; 
+            margin: 40px auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+            text-align: center; 
+        }
+        img { 
+            border-radius: 10px; 
+            width: 100%; 
+            max-width: 400px; 
+            height: auto; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            margin-bottom: 20px; 
+        }
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            text-align: left; 
+            margin-top: 20px; 
+            padding: 15px; 
+            background: #fdfdfd; 
+            border-radius: 8px; 
+        }
+        .info-item { border-bottom: 1px solid #eee; padding: 5px 0; }
+        .full-width { grid-column: span 2; }
+        .voltar { 
+            display: inline-block; 
+            margin-top: 25px; 
+            text-decoration: none; 
+            color: #2196F3; 
+            font-weight: bold; 
+        }
+        .id-badge { color: #888; font-size: 0.9em; }
     </style>
 </head>
 <body>
-    <div class="perfil">
+
+<div class="perfil">
+    <span class="id-badge">Modelo ID #{{ modelo.id }}</span>
     <h1>{{ modelo.nome }}</h1>
     
-    <!-- O Flask busca na pasta static automaticamente -->
-    <img src="{{ url_for('static', filename='uploads/' + modelo.foto_url) }}" 
-         alt="Foto de {{ modelo.nome }}" style="max-width: 400px;">
+    <img src="{{ url_for('static', filename='uploads/' + modelo.foto_url) }}" alt="Foto de {{ modelo.nome }}">
     
-    <p><strong>Idade:</strong> {{ modelo.idade }} anos</p>
-    <br>
-    <a href="/">← Voltar para a lista</a>
+    <div class="info-grid">
+        <div class="info-item"><strong>Idade:</strong> {{ modelo.idade }} anos</div>
+        <div class="info-item"><strong>Altura:</strong> {{ modelo.altura }}m</div>
+        <div class="info-item"><strong>Peso:</strong> {{ modelo.peso }}kg</div>
+        <div class="info-item"><strong>Cabelo:</strong> {{ modelo.cabelo }}</div>
+        <div class="info-item"><strong>Pele:</strong> {{ modelo.pele }}</div>
+        <div class="info-item"><strong>Olhos:</strong> {{ modelo.olhos }}</div>
+        
+        <div class="info-item full-width" style="text-align: center; background: #eee; margin-top: 10px;">
+            <strong>Medidas (Busto/Cintura/Quadril):</strong><br>
+            {{ modelo.busto }}cm / {{ modelo.cintura }}cm / {{ modelo.quadril }}cm
+        </div>
+
+        {% if modelo.evento_participado %}
+        <div class="info-item full-width">
+            <strong>Eventos:</strong><br>
+            {{ modelo.evento_participado }}
+        </div>
+        {% endif %}
+    </div>
+
+    <a href="/" class="voltar">← Voltar para a lista</a>
 </div>
+
 </body>
 </html>
