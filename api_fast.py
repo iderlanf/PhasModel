@@ -9,7 +9,7 @@ app = FastAPI(title="API de Modelos Phas Models")
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "0510",
+    "password": "",
     "database": "biblioteca"
 }
 
